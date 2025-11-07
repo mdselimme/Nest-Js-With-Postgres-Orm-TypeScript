@@ -31,4 +31,15 @@ export class StudentService {
         const result = await this.studentRepository.delete(id);
         return { affected: result.affected || undefined };
     }
+
+    async searchStudent(filters: { name?: string; age?: number }): Promise<Student[]> {
+        const query = this.studentRepository.createQueryBuilder('student');
+        if (filters.name) {
+            query.andWhere(`student.name ILIKE :name`, { name: `%${filters.name}%` })
+        }
+        if (filters.age) {
+            query.andWhere(`student.age = :age`, { age: filters.age })
+        }
+        return query.getMany();
+    }
 }

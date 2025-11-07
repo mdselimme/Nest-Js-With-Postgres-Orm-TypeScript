@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { Student } from './student.entity';
 
@@ -21,6 +21,11 @@ export class StudentController {
         return this.studentService.findAllStudent();
     }
 
+    @Get('/search')
+    query(@Query('name') name: string, @Query('age') age: string) {
+        return this.studentService.searchStudent({ name, age: Number(age) });
+    }
+
     @Get(':id')
     studentById(@Param('id') id: string) {
         return this.studentService.findById(Number(id));
@@ -30,4 +35,5 @@ export class StudentController {
     deleteById(@Param('id') id: string) {
         return this.studentService.deleteById(Number(id));
     }
+
 }
