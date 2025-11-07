@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { Student } from './student.entity';
+import { SupabaseAuthGuard } from 'src/auth/supabase-auth/supabase-auth.guard';
 
 @Controller('student')
 export class StudentController {
@@ -16,6 +17,7 @@ export class StudentController {
         return this.studentService.updateById(Number(id), student);
     }
 
+    @UseGuards(SupabaseAuthGuard)
     @Get()
     student() {
         return this.studentService.findAllStudent();
